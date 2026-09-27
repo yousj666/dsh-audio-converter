@@ -1,0 +1,86 @@
+{
+  "name": "dsh-audio-converter",
+  "version": "0.1.0",
+  "description": "音频转换器：解密网易云 NCM / 酷我 KWM / 酷狗 KGM / QQ音乐 QMC 等平台加密音乐，mp3/flac/m4a/aac/wav/ogg/opus 互转，并提供响度归一化、EQ、动态压缩、重采样、位深等音质增强。带拖拽界面，也能打成单文件 exe。",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./pipeline": "./lib/pipeline.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "scripts",
+    "exe",
+    "convert.mjs",
+    "convert.bat",
+    "dsh.plugin.json",
+    "cordis.patch.yml",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node test-ncm.mjs && node test-kwm.mjs && node test-kgm-qmc.mjs && node test-qmc2.mjs && node test-ffmpeg.mjs && node test-pipeline.mjs && node test-host.mjs && node test-client.mjs",
+    "convert": "node convert.mjs",
+    "expand-kugou-key": "node scripts/expand-kugou-key.mjs",
+    "build-exe": "node exe/build.mjs"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis",
+    "audio",
+    "converter",
+    "transcode",
+    "ncm",
+    "netease",
+    "kwm",
+    "kuwo",
+    "kgm",
+    "kugou",
+    "qmc",
+    "mflac",
+    "mgg",
+    "qqmusic",
+    "decrypt",
+    "ffmpeg",
+    "loudness",
+    "ebur128",
+    "music"
+  ],
+  "author": "yousj666",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yousj666/dsh-audio-converter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yousj666/dsh-audio-converter/issues"
+  },
+  "homepage": "https://github.com/yousj666/dsh-audio-converter#readme",
+  "engines": {
+    "dsh": ">=0.1.0-rc.6",
+    "node": ">=22.19"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    }
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "inject": [],
+      "platform": "web"
+    }
+  }
+}

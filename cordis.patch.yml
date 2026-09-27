@@ -1,0 +1,14 @@
+# dsh-audio-converter bundle patch：挂上音频转换器插件。
+#
+# host 半边注册三个工具：
+#   audio_convert       转换/解密文件或目录
+#   audio_inspect       看一个文件到底是什么（按 magic 不按后缀）
+#   audio_capabilities  查支持矩阵（含「哪些格式离线根本解不了」）
+#
+# 浏览器半边给会话视图加一个「音频转换」页签（conversation.view, order 40），
+# 支持拖拽文件进来。
+#
+# 依赖：ffmpeg（自动探测 winget / scoop / choco / PATH 里的安装）
+- insert:
+    - id: dsh-audio-converter
+      name: 'dsh-audio-converter'

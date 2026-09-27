@@ -1,0 +1,47 @@
+# 依赖
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# 构建产物
+dist/
+temp/
+build/
+*.exe
+
+# 构建时下载的 ffmpeg（几百 MB，不该进仓库）
+download/
+
+# 运行/调试产物
+*.log
+*.tmp
+debug/
+.DS_Store
+Thumbs.db
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# 如果你把自己的测试素材放进来了，别提交
+fixtures/
+*.ncm
+*.kwm
+*.kgm
+*.kgma
+*.vpr
+*.qmc0
+*.qmc2
+*.qmc3
+*.qmcflac
+*.qmcogg
+*.tkm
+*.mflac
+*.mgg
+*.mgg0
+*.mgg1
+*.mgg2
+*.mmp4
+*.xm

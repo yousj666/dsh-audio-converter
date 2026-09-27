@@ -1,0 +1,17 @@
+{
+  "id": "local/dsh-audio-converter",
+  "version": "0.1.0",
+  "main": "./lib/index.js",
+  "description": "音频转换器：解密各平台加密音乐（NCM/KWM 已验证），常规格式互转，并提供音质增强。带拖拽界面。",
+  "engines": {
+    "dsh": ">=0.1.0-rc.6"
+  },
+  "contributes": {
+    "tools": [
+      "audio_convert",
+      "audio_inspect",
+      "audio_capabilities"
+    ],
+    "skills": []
+  }
+}
