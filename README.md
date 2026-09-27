@@ -306,7 +306,10 @@ diag-ncm.mjs                    NCM 诊断工具（排查"解出来对不对"用
 
 ## 许可
 
-MIT。解密算法参考自公开的技术分析文章与 MIT 协议的开源实现（见各文件头部注释）。
+MIT —— 见 [LICENSE](./LICENSE)。
+
+解密算法的参考资料、酷狗公钥表的来源与性质、FFmpeg 的许可说明，
+都写在 [THIRD-PARTY-NOTICES.md](./THIRD-PARTY-NOTICES.md) 里。
 
 ## 免责声明
 
