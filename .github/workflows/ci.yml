@@ -1,0 +1,92 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  # ── 纯逻辑测试：不需要 ffmpeg，跑得快，多平台多版本 │
+  unit:
+    name: 单元测试 (${{ matrix.os }} / node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: ['22', '24']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # 这几个不需要 ffmpeg，clone 下来就能跑
+      - name: 解密器测试（NCM / KWM / KGM / QMC）
+        run: |
+          node test-ncm.mjs
+          node test-kwm.mjs
+          node test-kgm-qmc.mjs
+          node test-qmc2.mjs
+
+      # host/client 用 mock ctx，也不需要 ffmpeg
+      - name: 插件挂载测试
+        run: |
+          node test-host.mjs
+          node test-client.mjs
+
+  # ── 端到端测试：需要 ffmpeg │
+  e2e:
+    name: 端到端测试 (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: 装 ffmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
+
+      - name: 确认 ffmpeg 可用
+        run: ffmpeg -version
+
+      - name: ffmpeg 封装与回退路径
+        run: node test-ffmpeg.mjs
+
+      - name: 完整管线
+        run: node test-pipeline.mjs
+
+  # ── 打包检查：确保 npm 包里没有意外文件 │
+  pack:
+    name: npm 包检查
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: 打包（不发布）
+        run: npm pack --dry-run
+
+      - name: 检查包里没有测试素材和密钥
+        shell: bash
+        run: |
+          npm pack --dry-run --json > pack.json
+          echo "包含的文件："
+          node -e "
+            const p = require('./pack.json')[0];
+            p.files.forEach(f => console.log('  ' + f.path));
+            const bad = p.files.filter(f =>
+              /\.(ncm|kwm|kgm|qmc|mflac|mgg|xm)$/.test(f.path) ||
+              /secret|\.env$/i.test(f.path)
+            );
+            if (bad.length) { console.error('包里混进了不该有的文件：', bad); process.exit(1); }
+            console.log('✅ 没有测试素材或密钥');
+          "
